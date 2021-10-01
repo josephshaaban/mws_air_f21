@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from air_app.models import QuestionAndAnswer
+
+admin.site.register(QuestionAndAnswer)
