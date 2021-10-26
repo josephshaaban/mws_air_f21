@@ -9,3 +9,6 @@ class QuestionAndAnswer(models.Model):
 
     question_text = models.TextField(blank=False, null=False)
     answer_text = models.TextField(blank=False, null=False)
+
+    def __str__(self):
+        return f'{self.question_text}'

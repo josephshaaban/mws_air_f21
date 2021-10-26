@@ -98,10 +98,20 @@ input[type="checkbox"]:checked + label::after{
   border-radius: 30%;
 }
 
-textarea.textarea.form-control {
-
+.textarea {
+  width: 70%;
+  height: 100px;
 }
 
 .col-form-label {
   color: #FFFA01FF;
+}
+
+.btn.btn-outline-info{
+  color: #FFFA01FF;
+  border-color: #FFFA01FF;
+}
+
+.control-group {
+  margin-top: 10px;
 }

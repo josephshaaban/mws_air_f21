@@ -10,7 +10,13 @@ def home_view(request):
 
 
 def data_entry_view(request):
+    if request.method == "POST":
+        form = QuestionsAndAnswersForm(request.POST)
+        form.save()
+
+    # once ask for this page, returns an empty form
     form = QuestionsAndAnswersForm()
-    return render(request, template_name='', context={
+
+    return render(request, template_name='air_app/data_entry.html', context={
         'form': form,
     })

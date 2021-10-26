@@ -8,3 +8,7 @@ class QuestionsAndAnswersForm(forms.ModelForm):
         """Specifies the model and the relevant fields"""
         model = QuestionAndAnswer
         fields = '__all__'
+        widgets = {
+            'question_text': forms.Textarea(attrs={'cols': '', 'rows': ''}),
+            'answer_text': forms.Textarea(attrs={'cols': '', 'rows': ''}),
+        }

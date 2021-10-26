@@ -20,5 +20,5 @@ from air_app.views import data_entry_view, home_view
 urlpatterns = [
     # todo: home page.
     path('', home_view, name='home'),
-    path('/enter-Q&A/', data_entry_view, name='data_entry')
+    path('enter-Q&A/', data_entry_view, name='data_entry')
 ]
