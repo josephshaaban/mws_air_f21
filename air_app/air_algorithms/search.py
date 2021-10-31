@@ -26,7 +26,8 @@ def search(query):
 
     # Construct vocabulary from inverted index
     vocabulary = set(index_db.keys())
-    num_docs = len(questions)
+    print('search.py: L29', questions)
+    num_questions = len(questions)
 
     # Preprocess query
     tokens = textprocessing.preprocess_text(query, stopwords_set)
@@ -38,7 +39,7 @@ def search(query):
 
     for term, freq in query_bow.items():
         df = index_db[term]['df']
-        query_weights[term] = helper.idf(df, num_docs) * helper.tf(freq)
+        query_weights[term] = helper.idf(df, num_questions) * helper.tf(freq)
 
     # Normalize query weights
     query_length = math.sqrt(sum((e ** 2 for e in query_weights.values())))
@@ -46,12 +47,12 @@ def search(query):
         query_weights[term] = value / query_length
 
     # Calculate scores
-    scores = [[i, 0] for i in range(num_docs)]
+    scores = [[i, 0] for i in range(num_questions)]
     for term, query_weight in query_weights.items():
         df = index_db[term]['df']
         postings_list = index_db[term]['postings_list']
         for docId, freq in postings_list.items():
-            doc_weight = helper.idf(df, num_docs) * helper.tf(freq)
+            doc_weight = helper.idf(df, num_questions) * helper.tf(freq)
             scores[docId][1] += query_weight * doc_weight / lengths[docId]
 
     index_db.close()
@@ -62,6 +63,10 @@ def search(query):
     for index, score in scores[:20]:
         if score == 0:
             break
+        print('Q: {}'.format(questions[index]))
         results.append('\n{} - {}'.format(questions[index], score))
+
+    if len(results) == 0:
+        return ['No results found!!']
 
     return results

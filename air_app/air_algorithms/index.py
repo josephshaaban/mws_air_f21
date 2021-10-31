@@ -12,7 +12,6 @@ def get_corpus(dataset, stopwords_set):
     for question, text in dataset:
         if text != '':
             tokens = textprocessing.preprocess_text(text, stopwords_set)
-            print('Q: {}'.format(question))
             yield question, Counter(tokens)
 
 
@@ -22,7 +21,8 @@ def get_corpora(stopwords_set, visited_questions):
             if question not in visited_questions:
                 visited_questions.add(question)
                 text = helper.extract_question_and_answer_text(question)
-                yield question, text
+                print(text)
+                yield question.question_text, text
     dataset = index_questions()
 
     yield from get_corpus(dataset, stopwords_set)
