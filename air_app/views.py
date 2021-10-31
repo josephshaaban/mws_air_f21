@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+from air_app.air_algorithms.index import index
 from air_app.air_algorithms_ import boolean_model
 from air_app.forms import QuestionsAndAnswersForm, SearchQueryForm
 
@@ -14,6 +15,7 @@ def data_entry_view(request):
     if request.method == "POST":
         form = QuestionsAndAnswersForm(request.POST)
         form.save()
+        index()
 
     # once ask for this page, returns an empty form
     form = QuestionsAndAnswersForm()
