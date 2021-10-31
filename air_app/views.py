@@ -32,11 +32,13 @@ def search_query_view(request):
         if form.is_valid():
             selected_algo = form.cleaned_data['select_algorithm']
             query = form.cleaned_data['query']
-            results = []
+
             if selected_algo == 'boolean_model':
-                results = boolean_model(query)
-            elif selected_algo == 'boolean_model':
                 results = search(query)
+            elif selected_algo == 'extended_boolean_model':
+                results = search(query)
+            else:
+                results = ['No results found!!']
             return render(request, 'air_app/results_page.html', context={'results': results})
 
     form = SearchQueryForm()
