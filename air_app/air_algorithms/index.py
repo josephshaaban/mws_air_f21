@@ -1,10 +1,11 @@
+import math
+import os
+import pickle
+import shelve
+from collections import Counter
+
 from air_app.models import QuestionAndAnswer
 from utils import helper, textprocessing
-import os
-import shelve
-import pickle
-from collections import Counter
-import math
 
 
 def get_corpus(dataset, stopwords_set):
@@ -16,13 +17,13 @@ def get_corpus(dataset, stopwords_set):
 
 
 def get_corpora(stopwords_set, visited_questions):
-    def index_questions(visited_questions):
+    def index_questions():
         for question in QuestionAndAnswer.objects.all():
             if question not in visited_questions:
                 visited_questions.add(question)
                 text = helper.extract_question_and_answer_text(question)
                 yield question, text
-    dataset = index_questions(visited_questions)
+    dataset = index_questions()
 
     yield from get_corpus(dataset, stopwords_set)
 
@@ -47,28 +48,27 @@ def index():
         with open(questions_file, mode='rb') as f:
             questions = pickle.load(f)
 
-
     corpora = get_corpora(stopwords_set, visited_questions)
 
     index_db = shelve.open(index_db_file, flag='c', writeback=True)
     # Build inverted index
     helper.build_inverted_index(questions, corpora, index_db)
 
-    # Caculate lengths for normalizing
+    # Calculate lengths for normalizing
     num_docs = len(questions)
-    lengths = [0 for i in range(num_docs)]
-    for index in range(num_docs):
+    lengths = [0 for _ in range(num_docs)]
+    for idx in range(num_docs):
         # Re-construct doc vector from inverted index
         vector = []
         for term, value in index_db.items():
             df = value['df']
             postings_list = value['postings_list']
 
-            if index in postings_list.keys():
-                weight = helper.tf(postings_list[index]) * helper.idf(df, num_docs)
+            if idx in postings_list.keys():
+                weight = helper.tf(postings_list[idx]) * helper.idf(df, num_docs)
                 vector.append(weight)
 
-        lengths[index] = math.sqrt(sum((e ** 2 for e in vector)))
+        lengths[idx] = math.sqrt(sum((e ** 2 for e in vector)))
 
     index_db.close()
 
