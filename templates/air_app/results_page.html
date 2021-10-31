@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+        {% for result in results %}
+            <p>result</p>
+        {% endfor %}
+    </div>
+{% endblock content %}
+{% block js %}
+{{ block.super }}
+{% endblock js %}

@@ -4,8 +4,8 @@ import pickle
 import shelve
 from collections import Counter
 
+from air_app.air_algorithms.utils import helper, textprocessing
 from air_app.models import QuestionAndAnswer
-from utils import helper, textprocessing
 
 
 def get_corpus(dataset, stopwords_set):

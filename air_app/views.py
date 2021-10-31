@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 from air_app.air_algorithms.index import index
+from air_app.air_algorithms.search import search
 from air_app.air_algorithms_ import boolean_model
 from air_app.forms import QuestionsAndAnswersForm, SearchQueryForm
 
@@ -31,13 +32,15 @@ def search_query_view(request):
         if form.is_valid():
             selected_algo = form.cleaned_data['select_algorithm']
             query = form.cleaned_data['query']
+            results = []
             if selected_algo == 'boolean_model':
                 results = boolean_model(query)
-            else:
-                results = boolean_model(query)
-            return render(request, 'results_page.html', context={'results': results})
+            elif selected_algo == 'boolean_model':
+                results = search(query)
+            return render(request, 'air_app/results_page.html', context={'results': results})
 
     form = SearchQueryForm()
+    index()
     return render(request, 'air_app/data_entry.html', context={
         'form': form,
     })

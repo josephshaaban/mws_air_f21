@@ -4,7 +4,7 @@ import pickle
 import shelve
 from collections import Counter
 
-from utils import helper, textprocessing
+from air_app.air_algorithms.utils import textprocessing, helper
 
 
 def search(query):
@@ -58,7 +58,10 @@ def search(query):
 
     # Sort scores and display results
     scores.sort(key=lambda e: e[1], reverse=True)
+    results = []
     for index, score in scores[:20]:
         if score == 0:
             break
-        print('{} - {}'.format(questions[index], score))
+        results.append('\n{} - {}'.format(questions[index], score))
+
+    return results
