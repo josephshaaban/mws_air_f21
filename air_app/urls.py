@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.urls import path
 
-from air_app.views import data_entry_view, home_view, search_query_view
+from air_app.views import data_entry_view, home_view, search_query_view, display_question_view
 
 urlpatterns = [
     # todo: home page.
     path('', home_view, name='home'),
     path('enter-Q&A/', data_entry_view, name='data_entry'),
     path('search/', search_query_view, name='search_query'),
+    path('question/<pk>/', display_question_view, name='display_question')
 ]

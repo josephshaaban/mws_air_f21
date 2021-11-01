@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    {% block title %}<title>MWS Homework</title>{% endblock %}
+    {% block title %}<title>{% if title %}{{ title }}{% else %}MWS Homework{% endif %}</title>{% endblock %}
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -34,10 +34,11 @@
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
+                <a role="button" class="nav-item nav-link btn btn-warning btn-sm" href="/admin/" style="color: #212529; height: 35px;">Admin</a>
               {% if user.is_authenticated %}
-{#              <button class="btn btn-warning my-2 my-sm-0" type="button" href="{% url '/logout' %}">Logout</button>#}
+{#              <button class="btn btn-warning btn-sm" type="button" href="{% url '/logout' %}">Logout</button>#}
               {% else %}
-{#                  <button class="btn btn-warning my-2 my-sm-0" type="button" href="{% url 'login' %}">Login</button>#}
+{#                  <button class="btn btn-warning btn-sm" type="button" href="{% url 'login' %}">Login</button>#}
 {#                <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>#}
               {% endif %}
             </div>
@@ -59,5 +60,9 @@
         </div>
       </div>
     </main>
+    <footer class="container my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">تم تصميم الموقع بواسطة</p>
+        <p>ali_148686, ali_148694 and youssef_144909</p>
+    </footer>
 </body>
 </html>

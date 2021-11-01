@@ -1,14 +1,16 @@
-from django.shortcuts import render
+import re
 
-from air_app.air_algorithms.index import index
-from air_app.air_algorithms.search import search
-from air_app.air_algorithms_ import boolean_model
+from django.shortcuts import render, get_object_or_404
+
+from air_app.air_algorithms.vector_model.index import index
+from air_app.air_algorithms.vector_model.search import search
 from air_app.forms import QuestionsAndAnswersForm, SearchQueryForm
+from air_app.models import QuestionAndAnswer
 
 
 def home_view(request):
-    return render(request, template_name='base.html', context={
-        'title': "Hi! I'm working!!",
+    return render(request, template_name='home.html', context={
+        'title': "MWS Homework | Home",
     })
 
 
@@ -23,6 +25,8 @@ def data_entry_view(request):
 
     return render(request, template_name='air_app/data_entry.html', context={
         'form': form,
+        'form_submit_button': 'Post',
+        'legend': 'Enter questions & answers',
     })
 
 
@@ -38,12 +42,49 @@ def search_query_view(request):
             elif selected_algo == 'extended_boolean_model':
                 results = search(query)
             else:
-                results = ['No results found!!']
-            return render(request, 'air_app/results_page.html', context={'results': results})
+                results = search(query)
+
+            questions = QuestionAndAnswer.objects.filter(pk__in=results)
+            results = []
+            for question in questions:
+                colorization_template = '<span style="color: #FFFA01FF;">{query}</span>'
+
+                question_text = question.question_text
+                question_all_occurrences = set(
+                    re.findall(query, question_text, flags=re.IGNORECASE))
+                for occurrence in question_all_occurrences:
+                    question_text = re.sub(
+                        occurrence, colorization_template.format(query=occurrence), question_text)
+
+                answer_text = question.answer_text
+                answer_all_occurrences = set(
+                    re.findall(query, answer_text, flags=re.IGNORECASE))
+                for occurrence in answer_all_occurrences:
+                    answer_text = re.sub(
+                        occurrence, colorization_template.format(query=occurrence), answer_text)
+
+                results.append({
+                    'question_text': question_text,
+                    'answer_text': answer_text,
+                    'question_pk': question.pk,
+                })
+
+            return render(request, 'air_app/results_page.html', context={
+                'results': results,
+                'query': query,
+            })
 
     form = SearchQueryForm()
     index()
     return render(request, 'air_app/data_entry.html', context={
         'form': form,
+        'form_submit_button': 'Search',
+        'legend': 'Search question',
     })
 
+
+def display_question_view(request, pk):
+    q = get_object_or_404(QuestionAndAnswer, pk=pk)
+    return render(request, 'air_app/display_question_with_answer.html', context={
+        'question': q,
+    })

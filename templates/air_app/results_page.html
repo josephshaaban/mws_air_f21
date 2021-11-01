@@ -2,9 +2,15 @@
 {% load crispy_forms_tags %}
 {% block content %}
     <div class="content-section">
-        {% for result in results %}
-            <p>{{ result }}</p>
-        {% endfor %}
+        <ul>
+            {% for result in results %}
+            <li>
+                <a href="/question/{{ result.question_pk }}">{{ result.question_text |safe }}</a>
+                <br>
+                <p style="color: white;">{{ result.answer_text |safe }}</p>
+            </li>
+            {% endfor %}
+        </ul>
     </div>
 {% endblock content %}
 {% block js %}

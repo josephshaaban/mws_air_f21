@@ -9,20 +9,20 @@ from air_app.models import QuestionAndAnswer
 
 
 def get_corpus(dataset, stopwords_set):
-    for question, text in dataset:
+    for question_pk, text in dataset:
         if text != '':
             tokens = textprocessing.preprocess_text(text, stopwords_set)
-            yield question, Counter(tokens)
+            yield question_pk, Counter(tokens)
 
 
 def get_corpora(stopwords_set, visited_questions):
     def index_questions():
         for question in QuestionAndAnswer.objects.all():
-            if question not in visited_questions:
-                visited_questions.add(question)
+            question_pk = question.pk
+            if question_pk not in visited_questions:
+                visited_questions.add(question_pk)
                 text = helper.extract_question_and_answer_text(question)
-                print(text)
-                yield question.question_text, text
+                yield question_pk, text
     dataset = index_questions()
 
     yield from get_corpus(dataset, stopwords_set)

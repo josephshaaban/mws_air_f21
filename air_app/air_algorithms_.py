@@ -10,6 +10,8 @@ import sys
 
 from air_app.models import QuestionAndAnswer
 
+
+# see https://medium.com/voice-tech-podcast/information-retrieval-using-boolean-query-in-python-e0ea9bf57f76
 stopwords_ = LazyCorpusLoader(
     "stopwords", WordListCorpusReader, r"(?!README|\.).*", encoding="utf8"
 )

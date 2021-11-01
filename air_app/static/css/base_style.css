@@ -9,6 +9,25 @@ body {
   color: #FFFA01FF;
 }
 
+
+element.style {
+}
+.text-center {
+    text-align: center!important;
+}
+@media (min-width: 576px)
+.jumbotron {
+    padding: 4
+rem
+ 2
+rem
+;
+}
+
+.jumbotron {
+    background-color: #1d1d1f;
+}
+
 nav.navbar.navbar-expand-md {
   background-color: #1d1d1f;
 }

@@ -26,7 +26,6 @@ def search(query):
 
     # Construct vocabulary from inverted index
     vocabulary = set(index_db.keys())
-    print('search.py: L29', questions)
     num_questions = len(questions)
 
     # Preprocess query
@@ -59,14 +58,10 @@ def search(query):
 
     # Sort scores and display results
     scores.sort(key=lambda e: e[1], reverse=True)
-    results = []
+    results = {}
     for index, score in scores[:20]:
         if score == 0:
             break
-        print('Q: {}'.format(questions[index]))
-        results.append('\n{} - {}'.format(questions[index], score))
-
-    if len(results) == 0:
-        return ['No results found!!']
+        results[questions[index]] = score
 
     return results
